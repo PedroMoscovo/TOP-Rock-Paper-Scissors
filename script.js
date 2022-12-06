@@ -1,5 +1,9 @@
-// Array containing choices
-const choices = ["Rock","Paper","Scissors"];
+// Variables
+const choices = ["Rock","Paper","Scissors"]
+let playerSelection
+let computerSelection
+let playerScore = 0;
+let computerScore = 0;
 
 // Computer enters Y
 
@@ -18,28 +22,65 @@ function getPlayerChoice(){
 // Play Round
 
 function playRound(playerSelection, computerSelection) {
+    playerSelection = getPlayerChoice();
+    computerSelection = getComputerChoice();
+// Draw
     if (playerSelection === computerSelection){
-        return "It's a draw!"
-    } else if (playerSelection == "Rock" && computerSelection == "Paper"){
-        return "You lost! Paper beats Rock"
-    } else if (playerSelection == "Rock" && computerSelection == "Scissors"){
-        return "You win! Rock beats Scissors"
-    } else if (playerSelection == "Paper" && computerSelection == "Rock"){
-        return "You win! Paper beats Rock"
-    } else if (playerSelection == "Paper" && computerSelection == "Scissors"){
-        return "You lost! Scissors beats Paper"
-    } else if (playerSelection == "Scissors" && computerSelection == "Rock"){
-        return "You lost! Rock beats Scissors"
-    } else if (playerSelection == "Scissors" && computerSelection == "Paper"){
-        return "You win! Scissors beat Paper"
+        console.log("It's a draw" + '\n' + "Player played: " + playerSelection + " | " + "Computer played: " + computerSelection)
+
+// Computer win
+    } else if ((playerSelection == "Rock" && computerSelection == "Paper") ||
+            (playerSelection == "Paper" && computerSelection == "Scissors") ||
+            (playerSelection == "Scissors" && computerSelection == "Rock")) {
+        console.log("Computer gets a point!" + '\n' + "Player played: " + playerSelection + " | " + "Computer played: " + computerSelection + '\n' + computerSelection + " beats " + playerSelection)
+        return ++computerScore
+
+    // Player win
+    } else if ((playerSelection == "Rock" && computerSelection == "Scissors") || 
+            (playerSelection == "Paper" && computerSelection == "Rock") || 
+            (playerSelection == "Scissors" && computerSelection == "Paper")) {
+        console.log("Player gets a point!" + '\n' + "Player played: " + playerSelection + " | " + "Computer played: " + computerSelection + '\n' + playerSelection + " beats " + computerSelection)
+        return ++playerScore
+
+    // Bad Typo
     } else {
-        return "Bad typography";
+        console.log("Bad typography, please type Rock, Paper or Scissors")
     }
 }
+// Game function
 
-const playerSelection = getPlayerChoice();
-const computerSelection = getComputerChoice();
-console.log("Player chose:" + " " + playerSelection + " | " + "Computer chose:" + " " + computerSelection + " | " + playRound(playerSelection, computerSelection));
+function game(){
+    for (let i = 5; playerScore <= i;) {
 
-// Keep track of Score, if player reaches 5 wins present "You Win", if computer reaches 5 wins present "You Lose"
-// Replay
+        if (i === playerScore) {
+            console.log("You Win!");
+            playAgain();
+            break;
+
+        } else if (i === computerScore){
+            console.log("You Lose!");
+            playAgain();
+            break;
+        } else {
+            console.log("Player:" + " " + playerScore + " " + "Computer:" + " " + computerScore);
+            playRound(playerSelection, computerSelection);
+    
+        }
+     }
+}
+
+// Play again function 
+
+function playAgain(){
+    const response = confirm("Play again?");
+    if (response){
+        playerScore = 0;
+        computerScore = 0;
+        game();
+    } else {
+        console.log("Good game.")
+    }
+    
+}
+
+game();
